@@ -6,32 +6,35 @@ catalogue = {
     "Pp3" : 2.4, # cleaning [€/m2]
     "Pp4" : 18, # dehumidification [€/m3]
 
-    "Pc1" : 0,
-    "Pc2" : 5, # TBD
-    "Pc3" : 11.99, # baseboard [€/ml]
-    "Pc4" : 50.43, # partition wall [€/m2]
-    "Pc5" : 16.56, # fake ceiling [€/m2]
-    "Pc6" : 26.4, # internal plaster [€/m2]
-    "Pc7" : 33.16, # external plaster [€/m2]
-    "Pc8a" : 150, # internal door [€/unit]
-    "Pc8b": 400,  # entrance door [€/unit]
-    "Pc8c": 400,  # entrance lock door [€/unit]
-    "Pc9a" : 150, # window [€/unit] TBD
-    "Pc9b" : 400, # window bay [€/unit] TBD
-    "Pc10a" : 17067.03 * typology["BuildingTest"]["Sh"] + 9000 * (1-typology["BuildingTest"]["Sh"]), # boiler centralized [€/unit]
-    "Pc10b" : 3897.64, # boiler distributed [€/unit]
-    "Pc11" : 10.50, # internal painting [€/m2]
-    "Pc12" : 0, # external painting [€/m2] TBD
-    "Pc13" : 2500, # elevator [€/unit] TBD
-    "Pc14" : 5,
-    "Pc15a" : 504.84, # electric radiator [€/unit]
-    "Pc15b" : 100, # radiator purging [€/unit]
-    "Pc16a" : 150,
-    "Pc16b" : 500,
-    "Pc17" : 200,
+    "Pc1a" : {"low" : 99, "medium" : 99, "high" : 141}, # wood pavement [€/m2]
+    "Pc1b" : {"low" : 109, "medium" : 109, "high" : 0}, # porcelain stoneware pavement [€/m2]
+    # High quality porcelain stoneware is not damaged in case of flood
+    "Pc1c" : {"low" : 111, "medium" : 111, "high" : 200}, # natural materials pavement [€/m2]
+    "Pc2" : {"low" : 25, "medium" : 25, "high" : 25}, # screed [€/m2]
+    "Pc3" : {"low" : 12, "medium" : 12, "high" : 12}, # baseboard [€/ml]
+    "Pc4" : {"low" : 128, "medium" : 128, "high" : 128}, # partition wall [€/m2]
+    "Pc5" : {"low" : 50, "medium" : 64, "high" : 72}, # fake ceiling [€/m2]
+    "Pc6" : {"low" : 50, "medium" : 52, "high" : 62}, # internal plaster and insulation [€/m2]
+    "Pc7" : {"low" : 30, "medium" : 30, "high" : 30}, # external plaster [€/m2]
+    "Pc8a" : {"low" : 138, "medium" : 182, "high" : 300}, # internal door [€/unit]
+    "Pc8b": {"low" : 1930, "medium" : 3168, "high" : 3680},  # entrance door [€/unit]
+    "Pc8c": {"low" : 632, "medium" : 763, "high" : 800},  # entrance lock door [€/unit]
+    "Pc9a" : {"low" : 595, "medium" : 780, "high" : 1276}, # window [€/unit]
+    "Pc9b" : {"low" : 867, "medium" : 1055, "high" : 1447}, # window bay [€/unit]
+    "Pc10a" : (15300 + (typology["BuildingTest"]["Nf"]-1) * 2000) * typology["BuildingTest"]["Sh"] + 9000 * (1-typology["BuildingTest"]["Sh"]), # boiler centralized [€/unit]
+    "Pc10b" : 4500, # boiler distributed [€/unit]
+    "Pc11" : {"low" : 15, "medium" : 31, "high" : 36}, # internal painting [€/m2]
+    "Pc12" : {"low" : 27, "medium" : 51, "high" : 51}, # external painting [€/m2]
+    "Pc13" : {"low" : 5000, "medium" : 12500, "high" : 20000}, # elevator [€/unit]
+    "Pc14a" : 100 * int(typology["BuildingTest"]["YR"]<1990) + 250 * int(typology["BuildingTest"]["YR"]>=1990), # electric radiator [€/unit]
+    "Pc14b" : 50, # radiator purging [€/unit]
+    "Pc14c" : 10 * typology["BuildingTest"]["Ai"], # radiator mud pulled out [€/house]
+    "Pc15a" : 100, # electrical system renovation [€/m2]
+    "Pc15b" : {"low" : 0, "medium" : 500, "high" : 5500},# alarm system [€/unit]
+    "Pc16" : 100, # plumbing system renovation [€/m2]
 
-    "Ps1" : 300,
-    "Ps2" : 50,
-    "Ps3" : 300
+    "Ps1" : 300, # soil consolidation [€/m2]
+    "Ps2" : 50, # local repairs [€/m2]
+    "Ps3" : 300 # pillar repairs [€/m2]
 
 }
