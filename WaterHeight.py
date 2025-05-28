@@ -1,5 +1,6 @@
 from main_function import DamageCalculation
-from config import exposure, typology
+from config import exposure, user
+from attributing_typology import complete_user
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -16,9 +17,10 @@ if __name__ == "__main__":
     cost_Cc1, cost_Cc2, cost_Cc3, cost_Cc4, cost_Cc5, cost_Cc6, cost_Cc7, cost_Cc8, cost_Cc9, cost_Cc10, cost_Cc11, cost_Cc12, cost_Cc13, cost_Cc14, cost_Cc15, cost_Cc16, cost_Cc17 = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
     cost_Cs1, cost_Cs2, cost_Cs3 = [], [], []
     exposure["FloodScenario"]["d"] = 24
+    user_filled = complete_user(user)
     for i in height :
         exposure["FloodScenario"]["He"] = i / 100
-        s, costs = DamageCalculation("FloodScenario", "BuildingTest")
+        s, costs = DamageCalculation("FloodScenario", user_filled)
         cost_Cp1.append(costs["Cp1"])
         cost_Cp2.append(costs["Cp2"])
         cost_Cp3.append(costs["Cp3"])
@@ -39,12 +41,11 @@ if __name__ == "__main__":
         cost_Cc14.append(costs["Cc14"])
         cost_Cc15.append(costs["Cc15"])
         cost_Cc16.append(costs["Cc16"])
-        cost_Cc17.append(costs["Cc17"])
         cost_Cs1.append(costs["Cs1"])
         cost_Cs2.append(costs["Cs2"])
         cost_Cs3.append(costs["Cs3"])
         total_preliminary_costs.append(costs["Cp1"] + costs["Cp2"] + costs["Cp3"] + costs["Cp4"])
-        total_components_costs.append(costs["Cc1"] + costs["Cc2"] + costs["Cc3"] + costs["Cc4"] + costs["Cc5"] + costs["Cc6"] + costs["Cc7"] + costs["Cc8"] + costs["Cc9"] + costs["Cc10"] + costs["Cc11"] + costs["Cc12"] + costs["Cc13"] + costs["Cc14"] + costs["Cc15"] + costs["Cc16"] + costs["Cc17"])
+        total_components_costs.append(costs["Cc1"] + costs["Cc2"] + costs["Cc3"] + costs["Cc4"] + costs["Cc5"] + costs["Cc6"] + costs["Cc7"] + costs["Cc8"] + costs["Cc9"] + costs["Cc10"] + costs["Cc11"] + costs["Cc12"] + costs["Cc13"] + costs["Cc14"] + costs["Cc15"] + costs["Cc16"])
         total_structural_costs.append(costs["Cs1"] + costs["Cs2"] + costs["Cs3"])
         total_costs.append(s)
 
@@ -77,7 +78,6 @@ axes[0][1].plot(height, cost_Cc13, label="Cc13")
 axes[0][1].plot(height, cost_Cc14, label="Cc14")
 axes[0][1].plot(height, cost_Cc15, label="Cc15")
 axes[0][1].plot(height, cost_Cc16, label="Cc16")
-axes[0][1].plot(height, cost_Cc17, label="Cc17")
 axes[0][1].plot(height, total_components_costs, label="Total components costs", linewidth=2)
 axes[0][1].set_title("Cost for different Cc values")
 axes[0][1].set_xlabel("Height of external water (cm)")
