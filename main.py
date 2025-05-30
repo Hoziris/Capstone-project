@@ -6,8 +6,8 @@ from AdaptationCost import adaptation_cost
 if __name__ == "__main__":
 
     # Defining the type of flood and type of building
-    flood_type = "Runoff" # FloodTest, Runoff, Quick Overflowing, Slow Overflowing, Rising Groundwater
-    adapt_package = "Advanced" # None, Basic, Medium, Advanced or Pro
+    flood_type = "FloodTest" # FloodTest, Runoff, Quick Overflowing, Slow Overflowing, Rising Groundwater
+    adapt_package = "Pro" # None, Basic, Medium, Advanced or Pro
 
     # Call of calculation of damages function
     try:
