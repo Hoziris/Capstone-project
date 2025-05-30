@@ -60,30 +60,6 @@ def adaptation_cost(user, adapt_package):
     CA21 = adaptation_catalogue["PA21"] * user["Hf"] * Af/100 * int(adapt_package == "Pro")
     CA22 = adaptation_catalogue["PA22"] * Af/100 * int(adapt_package != "None")
 
-    print("CA1", CA1)
-    print("CA2", CA2)
-    print("CA3", CA3)
-    print("CA4", CA4)
-    print("CA5", CA5)
-    print("CA6", CA6)
-    print("CA7", CA7)
-    print("CA8", CA8)
-    print("CA9", CA9)
-    print("CA10", CA10)
-    print("CA11", CA11)
-    print("CA12", CA12)
-    print("CA13", CA13)
-    print("CA14", CA14)
-    print("CA15", CA15)
-    print("CA16", CA16)
-    print("CA17", CA17)
-    print("CA18", CA18)
-    print("CA19", CA19)
-    print("CA20", CA20)
-    print("CA21", CA21)
-    print("CA22", CA22)
-
-
 
     pa = round(CA1 + CA2 + CA3 + CA4 + CA5 + CA6 + CA7 + CA8 + CA9 + CA10 + CA11 + CA12 + CA13 + CA14 + CA15 + CA16 + CA17 + CA18 + CA19 + CA20 + CA21 + CA22)
     return pa
