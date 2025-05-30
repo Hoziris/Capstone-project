@@ -23,6 +23,8 @@ def DamageCalculation(flood_type, user, adaptation) :
     if Qm is None :
         Qm = int(Yr>=2005)
     s = 0
+    if Qc is None :
+        Qc = "medium"
 
     #Building Variables
     Af = Ai / Nf # Area of one floor (m2)
@@ -89,7 +91,7 @@ def DamageCalculation(flood_type, user, adaptation) :
     Ec1a = int(Sp==1) * int(d>24) * (Af * Nfu * int(Hi>0))
     Cc1a = Ec1a * catalogue["Pc1a"][Qc]
     #If pavement is porcelain stoneware
-    Ec1b = int(Sp==2) * ( int(Yc<1990) * (0.2 + int(d>24) * 0.4) + int(Yc>1990) * int(d>48) * 0.2 ) * (Af * Nfu * int(Hi>0))
+    Ec1b = int(Sp==2) * ( int(Yc<=1990) * (0.2 + int(d>24) * 0.4) + int(Yc>1990) * int(d>48) * 0.2 ) * (Af * Nfu * int(Hi>0))
     Cc1b = Ec1b * catalogue["Pc1b"][Qc]
     # If pavement is marble or natural materials
     Ec1c = int(Sp==3) * (q * 0.2 * Af * Nfu * int(Hi>0)) * int(d>=72)
@@ -115,7 +117,7 @@ def DamageCalculation(flood_type, user, adaptation) :
     Cc4 = (Ec4 * catalogue["Pc4"][Qc]) * int(adaptation != "Pro")
 
     # Cost of Fake ceiling
-    Ec5 = 0.2 * Af * (Nfu - 1 + int(Hi - (Nfu - 1)*Hf) >= Hf - 0.5) * int(Hi>0) * int(d>=12)
+    Ec5 = 0.2 * Af * (Nfu - 1 + int(Hi - (Nfu - 1)*Hf >= Hf - 0.5)) * int(Hi>0) * int(d>=12)
     # Fake ceiling is replaced for every storey where the water height touches it
     # Fake ceiling assumed to represent 20% of total ceiling area
     Cc5 = Ec5 * catalogue["Pc5"][Qc]
@@ -186,11 +188,11 @@ def DamageCalculation(flood_type, user, adaptation) :
 
     # Cost of Radiators replacement
     # Cost of electrical radiators
-    Ec14a = round(Er * 0.09 * (Nfu - 1 + int(Hi - (Nfu-1)*Hf)>= 0.2)) * int(Hi>0)
+    Ec14a = round(Er * 0.09 * Af * (Nfu - 1 + int(Hi - (Nfu-1)*Hf>= 0.2))) * int(Hi>0)
     # Only of electrical radiators (Er=1), to be changed if water >=0.2m
     Cc14a = Ec14a * catalogue["Pc14a"] * (1 - int(adaptation == "Pro") - int(adaptation == "Advanced"))
     # Cost of purging for nonelectrical radiators
-    Ec14b = round((1-Er) * 0.09 * (Nfu - 1 + int(Hi - (Nfu-1)*Hf)>= 0.3) *  (1-int(se=="no")) * int(Hi>0))
+    Ec14b = round((1-Er) * 0.09 * Af * (Nfu - 1 + int(Hi - (Nfu-1)*Hf>= 0.3)) *  (1-int(se=="no")) * int(Hi>0))
     # Only of non-electrical radiators (Er=0), to be purged if water >=0.3m
     Cc14b = Ec14b * catalogue["Pc14b"]
     # Cost of pulling out mud for nonelectrical radiators
