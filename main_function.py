@@ -290,7 +290,7 @@ def print_camembert(costs, flood_type):
         startangle=140,
         colors=colors
     )
-    title = f"Cost Repartition\n\n Total cost: {costs["total cost"]}€"
+    title = f"Cost Repartition\n\n Total cost: {costs['total cost']}€"
     subtitle = f"Flood type: {flood_type}"
     plt.title(title)
     plt.suptitle(subtitle)
