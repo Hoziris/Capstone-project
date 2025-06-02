@@ -54,8 +54,8 @@ QM_MAPPING = {
 def treatement(user_dict) :
 
     # Defining the type of flood and type of building
-    flood_type = "FloodTest" # FloodTest, Runoff, Quick Overflowing, Slow Overflowing, Rising Groundwater
-    adapt_package = "Pro" # None, Basic, Medium, Advanced or Pro
+    #flood_type = "FloodTest" # FloodTest, Runoff, Quick Overflowing, Slow Overflowing, Rising Groundwater
+    #adapt_package = "Pro" # None, Basic, Medium, Advanced or Pro
 
     db_value = user_dict["Db"]
     user_dict["Db"] = float(DB_MAPPING.get(db_value))
@@ -90,9 +90,28 @@ def treatement(user_dict) :
         user_dict["Qm"] = float(QM_MAPPING.get(qm_value))
 
     user_filled = complete_user(user_dict)
-    print(user_filled)
-    ca = adaptation_cost(user_filled, adapt_package)
-    #print("Adaptation measures cost", ca)
-    s, costs_none = DamageCalculation(flood_type, user_filled, "None")
-    t, costs_adapt = DamageCalculation(flood_type, user_filled, adapt_package)
-    return s, t, ca
+
+    n, cn = DamageCalculation(user_dict["Flood_Scenario"], user_filled, "None")
+    b, cb = DamageCalculation(user_dict["Flood_Scenario"], user_filled, "Basic")
+    ba = adaptation_cost(user_filled, "Basic")
+    m, cm = DamageCalculation(user_dict["Flood_Scenario"], user_filled, "Medium")
+    ma = adaptation_cost(user_filled, "Medium")
+    a, ca = DamageCalculation(user_dict["Flood_Scenario"], user_filled, "Advanced")
+    aa = adaptation_cost(user_filled, "Advanced")
+    p, cp = DamageCalculation(user_dict["Flood_Scenario"], user_filled, "Pro")
+    pa = adaptation_cost(user_filled, "Pro")
+
+    cba = {
+        "None" : n,
+        "Basic" : b + ba,
+        "Medium" : m + ma,
+        "Advanced" : a + aa,
+        "Pro" : p + pa
+    }
+
+    min_cost = ("None", n)
+    for val in cba :
+        if cba[val] < min_cost[1] :
+            min_cost = (val, cba[val])
+
+    return n, min_cost

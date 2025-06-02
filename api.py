@@ -103,7 +103,6 @@ class User_answer(BaseModel):
     Hcs: Optional[float] = None
     Qm: Optional[QmEnum] = None
 
-    Adapt_Package : Optional[ApEnum] = None
     Flood_Scenario : Optional[FsEnum] = None
 
 @app.post("/analyser")
