@@ -4,8 +4,20 @@ from pydantic import BaseModel, confloat, validator
 from enum import Enum
 import uvicorn
 from processing import treatement
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+origins = [
+    "http://localhost",
+    "https://inondact.com",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Model for user's answer
 
@@ -52,6 +64,20 @@ class QmEnum(str, Enum):
     low = "low"
     high = "high"
 
+class ApEnum(str, Enum):
+    none = "None"
+    basic = "Basic"
+    medium = "Medium"
+    advanced = "Advanced"
+    pro = "Pro"
+
+class FsEnum(str, Enum):
+    flood_test = "FloodTest"
+    runoff = "Runoff"
+    quick_overflowing = "Quick Overflowing"
+    slow_overflowing = "Slow Overflowing"
+    rising_groundwater = "Rising Groundwater"
+
 class User_answer(BaseModel):
 
     Ai: confloat(gt=0)  # m²
@@ -76,12 +102,13 @@ class User_answer(BaseModel):
     Hcs: Optional[float] = None
     Qm: Optional[QmEnum] = None
 
-
+    Adapt_Package : Optional[ApEnum] = None
+    Flood_Scenario : Optional[FsEnum] = None
 
 @app.post("/analyser")
 def analysis(answers: User_answer):
     result = treatement(answers.dict())
-    return {"resultat": result}
+    return {"result": result}
 
 
 @validator("Ai")
