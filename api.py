@@ -10,6 +10,7 @@ origins = [
     "http://localhost",
     "https://www.inondact.com",
     "https://inondact.com",
+    "https://casptone-project.onrender.com"
 ]
 
 app.add_middleware(
@@ -128,6 +129,10 @@ def hf_must_be_positive(cls, v):
     if v <= 0:
         raise ValueError("Height of floor must be strictly positive")
     return v
+
+@app.get("/")
+def root():
+    return {"status": "API is running"}
 
 if __name__ == "__main__":
     uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
