@@ -102,16 +102,18 @@ def treatement(user_dict) :
     pa = adaptation_cost(user_filled, "Pro")
 
     cba = {
-        "None" : n,
-        "Basic" : b + ba,
-        "Medium" : m + ma,
-        "Advanced" : a + aa,
-        "Pro" : p + pa
+        "None" : (n, 0),
+        "Basic" : (b, ba),
+        "Medium" : (m, ma),
+        "Advanced" : (a, aa),
+        "Pro" : (p, pa)
     }
 
-    min_cost = ("None", n)
-    for val in cba :
-        if cba[val] < min_cost[1] :
-            min_cost = (val, cba[val])
+    min_cost = ("None", n, 0)
+    for val in cba:
+        if (cba[val][0] + cba[val][1]) < (min_cost[1] + min_cost[2]):
+            min_cost = (val, cba[val][0], cba[val][1])
+
+    #print(n, min_cost)
 
     return n, min_cost
