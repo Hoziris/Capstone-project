@@ -116,4 +116,4 @@ def treatement(user_dict) :
 
     #print(n, min_cost)
 
-    return n, min_cost
+    return cba, min_cost
