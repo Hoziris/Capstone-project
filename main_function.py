@@ -1,5 +1,7 @@
 import math
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import numpy as np
 
 from prices import catalogue
 from config import exposure as exp, adapt
@@ -44,9 +46,13 @@ def DamageCalculation(flood_type, user, adaptation) :
     Hi = max(He - Hg, 0) # Internal height of water (m)
 
     # If Hi inferior to height of adaptation measures, water can't penetrate inside building
-    if adaptation == ("Basic" or "Medium") :
+    if adaptation == "Basic" :
         Hi = int(Hi>0.8) * Hi
-    if adaptation == ("Advanced" or "Pro"):
+    if adaptation == "Medium":
+        Hi = int(Hi > 0.8) * Hi
+    if adaptation == "Advanced":
+        Hi = int(Hi>1) * Hi
+    if adaptation == "Pro":
         Hi = int(Hi>1) * Hi
 
     Vu = Af * Hi + Ab * Hb + Af * Hcs
@@ -65,7 +71,7 @@ def DamageCalculation(flood_type, user, adaptation) :
     Cp1 = Ep1 * catalogue["Pp1"]
 
     # Cost of Waste Disposal
-    Ep2 = (Vu/1000 * (20 * int(se=="high") + 5 * int(se=="medium") + int(se=="low")) * (1 + 0.4 * q)) * (int(adaptation=="None") + 0.5 * int(adaptation!="None"))
+    Ep2 = (Vu * (20 * int(se=="high") + 5 * int(se=="medium") + int(se=="low"))/1000 * (1 + 0.4 * q)) * (int(adaptation=="None") + 0.5 * int(adaptation!="None"))
     # mass of waste, cleaning increased by 40% in case of pollutants
     # In case of adaptation measures, active pumping decreases cost of preliminary measures
     Cp2 = Ep2 * catalogue["Pp2"]
@@ -271,30 +277,104 @@ def DamageCalculation(flood_type, user, adaptation) :
     return s, costs
 
 def print_camembert(costs, flood_type):
-    labels = [key for key in costs if key != "total cost"]  # Excluding total cost
-    values = [costs[key] for key in labels]
+    total_cost = costs["total cost"]
+    other_total = 0
+    labels = []
+    values = []
 
-    colors = [
-        "#66b3ff" if key.startswith("Cp") else  # Blue for "Cp"
-        "#99ff99" if key.startswith("Cc") else  # Green for "Cc"
-        "#ff9999" if key.startswith("Cs") else  # Red for "Cs"
-        "#dddddd"  # Grey for default
-        for key in labels
+
+    for key, value in costs.items():
+        if key == "total cost":
+            continue
+        if value / total_cost >= 0.03:
+            labels.append(key)
+            values.append(round(value))
+        else:
+            other_total += value
+
+    if other_total > 0:
+        labels.append("Autres")
+        values.append(round(other_total))
+        costs["Autres"] = other_total
+
+    #colors = [
+    #    "#4F81BD" if key.startswith("Cp") else  # Green for "Cp"
+    #    "#6FA9E1" if key.startswith("Cc") else  # Blue for "Cc"
+    #    "#ff9999" if key.startswith("Cs") else  # Red for "Cs"
+    #    "#B0CDEE"  # Grey for default
+    #    for key in labels
+    #]
+
+    sorted_items = sorted(zip(labels, values), key=lambda x: x[1], reverse=True)
+    labels, values = zip(*sorted_items)
+
+    cmap = cm.get_cmap('Blues')
+    norm = np.linspace(0.3, 0.9, len(values))
+    colors = [cmap(n) for n in norm[::-1]]
+
+    label_mapping = {
+            "Cp1": "Pompage",
+            "Cp2": "Décombres",
+            "Cp3": "Nettoyage",
+            "Cp4": "Déshumidification",
+            "Cc1": "Sol",
+            "Cc2": "Chape",
+            "Cc3": "Plinthes",
+            "Cc4": "Cloisons",
+            "Cc5": "Faux plafonds",
+            "Cc6": "Plâtre et isolation",
+            "Cc7": "Plâtre externe",
+            "Cc8": "Portes",
+            "Cc9": "Fenêtres",
+            "Cc10": "Chaudière",
+            "Cc11": "Peinture intérieure",
+            "Cc12": "Peinture extérieure",
+            "Cc13": "Ascenseur",
+            "Cc14": "Radiateurs",
+            "Cc15": "Système électrique",
+            "Cc16": "Plomberie",
+            "Cs1": "COnsolidation sol",
+            "Cs2": "Fissures",
+            "Cs3": "Pilliers",
+            "Autres": "Autres"
+    }
+
+    labels_named = [
+        f"{label_mapping.get(label, label)}\n({round(costs[label])} €)"
+        for label in labels
     ]
 
     plt.figure(figsize=(9,9))
-    plt.pie(
+
+    wedges, texts = plt.pie(
         values,
-        labels=[f"{label} ({costs[label]}€)" for label in labels],  # Labels with prices
-        autopct='%1.1f%%',
+        labels=labels_named,
         startangle=140,
-        colors=colors
+        colors=colors,
+        wedgeprops={'linewidth': 1, 'edgecolor': 'white'}
     )
-    title = f"Cost Repartition\n\n Total cost: {costs['total cost']}€"
-    subtitle = f"Flood type: {flood_type}"
-    plt.title(title)
-    plt.suptitle(subtitle)
+
+    for text in texts:
+        text.set_fontsize(10)
+        text.set_horizontalalignment('center')
+
+        #[f"{label}\n ({costs[label]}€)" for label in labels],  # Labels with prices
+
+
+    plt.title(f"Répartition des coûts\n\nTotal : {round(costs["total cost"])} €", fontsize=14, weight='bold')
+    plt.suptitle(f"Type d’inondation : {flood_type}", fontsize=10, y=0.92)
+    plt.tight_layout()
     plt.show()
+
+
+
+
+
+
+
+
+
+
 
 
 
