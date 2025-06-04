@@ -4,29 +4,29 @@
 
 user = {
     # Mandatory questions for typologies
-    "Sh": 1,  # Structure of housing (1 for collective housing, 0 for individual housing)
-    "Yc": 2000,  # Year of construction
-    "Nf": 5,  # Number of floors (including ground-floor)
+    "Sh": 0,  # Structure of housing (1 for collective housing, 0 for individual housing)
+    "Yc": 19600,  # Year of construction
+    "Nf": 2,  # Number of floors (including ground-floor)
     "Sj": 2,  # Structure juxtaposition (2 when 2 sides exposed in adjoined buildings, 4 when isolated building)
-    "Db": 1,  # Distribution of boiler : 0- centralized, 1- Distributed
+    "Db": 0,  # Distribution of boiler : 0- centralized, 1- Distributed
     "Eb": 1,  # Existence of basement : 0- no, 1- yes
-    "Ai": 500,  # Internal Area (m2)
+    "Ai": 200,  # Internal Area (m2)
 
     # Non mandatory questions
-    "Ad": 100,  # Area of one Dwelling (m2)
+    "Ad": 200,  # Area of one Dwelling (m2)
     "Hf": 2.5,  # Height of floor (m)
     "Hb": 2,  # Height of basement (m)
     "Hg": 0.1,  # Height of ground (m)
-    "Sb": 3,  # Structure of building: 1- Masonry, 2- Reinforced concrete, 3- Stone
+    "Sb": 2,  # Structure of building: 1- Masonry, 2- Reinforced concrete, 3- Stone
     "Sp": 2,  # Structure of Pavement: 1- Wood/Ceramic, 2-Porcelain Stoneware, 3-Marble/Natural Materials
     "Yr": 2000,  # Year of last major renovation
     "Tw": 0.4,  # Thickness of walls (m)
     "Ee": 0,  # Existence of elevator : 0- no, 1- yes
-    "Er": 1,  # existence of electrical radiators : 0- No, 1- yes
+    "Er": 0,  # existence of electrical radiators : 0- No, 1- yes
     "Hcs": 0,  # Height of crawl space
 
     # Quality Questions
-    "Qc": "low",  # Quality of Construction
+    "Qc": "medium",  # Quality of Construction
     "Qm": None,  # Quality of maintenance
     "Price": None  # Price of building
 }
@@ -44,7 +44,7 @@ exposure = {
     },
 
     "FloodScenario" : {
-        "He" : None, "ve" : 0.2, "se" : "low", "d" : None, "q" : 1
+        "He" : None, "ve" : 0.2, "se" : 'low', "d" : 12, "q" : 1
     },
 
     "Runoff" : {
