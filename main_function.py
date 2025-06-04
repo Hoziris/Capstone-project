@@ -361,7 +361,7 @@ def print_camembert(costs, flood_type):
         #[f"{label}\n ({costs[label]}€)" for label in labels],  # Labels with prices
 
 
-    plt.title(f"Répartition des coûts\n\nTotal : {round(costs["total cost"])} €", fontsize=14, weight='bold')
+    plt.title(f"Répartition des coûts\n\nTotal : {round(costs['total cost'])} €", fontsize=14, weight='bold')
     plt.suptitle(f"Type d’inondation : {flood_type}", fontsize=10, y=0.92)
     plt.tight_layout()
     plt.show()
