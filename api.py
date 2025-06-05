@@ -43,7 +43,7 @@ class SjEnum(str, Enum):
 
 class SpEnum(str, Enum):
     wood = "wood"
-    porcelain_stoneware = "porcelain_stoneware"
+    porcelain_stoneware = "porcelain stoneware"
     natural = "natural"
 
 class EbEnum(str, Enum):
