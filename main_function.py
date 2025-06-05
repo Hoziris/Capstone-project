@@ -15,7 +15,7 @@ def DamageCalculation(flood_type, user, adaptation) :
         raise ValueError(f"Adaptation Package '{adaptation}' not recognized.")
 
     He, se, ve, d, q = exp[flood_type]["He"], exp[flood_type]["se"], exp[flood_type]["ve"], exp[flood_type]["d"], exp[flood_type]["q"]
-    Ai, Ad, Tw, Nf, Yc, Yr = user["Ai"], user["Ad"], user["Tw"], user["Nf"], user["Yc"], user["Yr"]
+    Ai, Ad, Tw, Nf, Yc, Yr = user["Ai"], user["Ad"], user["Tw"]/100, user["Nf"], user["Yc"], user["Yr"]
     Hf, Hb, Hg, Hcs = user["Hf"], user["Hb"], user["Hg"], user["Hcs"]
     Sh, Sj, Sb, Sp, Db = user["Sh"], user["Sj"], user["Sb"], user["Sp"],user["Db"]
     Eb, Ee, Er = user["Eb"], user["Ee"], user["Er"]
@@ -27,6 +27,9 @@ def DamageCalculation(flood_type, user, adaptation) :
     s = 0
     if Qc is None :
         Qc = "medium"
+
+    if Yr < Yc:
+        Yr = Yc
 
     #Building Variables
     Af = Ai / Nf # Area of one floor (m2)
