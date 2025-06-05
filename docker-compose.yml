@@ -1,0 +1,9 @@
+services:
+  front:
+    container_name: capstone-front
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${FRONT_PORT:-8000}:8000
