@@ -32,7 +32,7 @@ SB_MAPPING = {
 
 SP_MAPPING = {
     "wood": 1,
-    "porcelain_stoneware": 2,
+    "porcelain stoneware": 2,
     "natural": 3
 }
 
