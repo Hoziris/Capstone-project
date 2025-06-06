@@ -61,7 +61,7 @@ def DamageCalculation(flood_type, user, adaptation) :
     Vu = Af * Hi + Ab * Hb + Af * Hcs
     Nfu = (int(Hi/Hf) + 1) # Number of flooded floors
     Ndfu = Nfu * Ndf # Number of dwellings per floor underwater
-
+    print(adaptation)
 
     # FUNCTIONS
 
@@ -78,7 +78,7 @@ def DamageCalculation(flood_type, user, adaptation) :
     # mass of waste, cleaning increased by 40% in case of pollutants
     # In case of adaptation measures, active pumping decreases cost of preliminary measures
     Cp2 = Ep2 * catalogue["Pp2"]
-
+    print(Ep2)
 
     # Cost of Cleaning
     Ep3 = ((2 * Ab + Hb * Pb + (Hi * Pw + 2 * Af * Nfu - Af) * int(Hi>0) ) * (1 + 0.4 * q)) * (int(adaptation=="None") + 0.5 * int(adaptation!="None"))
@@ -88,7 +88,7 @@ def DamageCalculation(flood_type, user, adaptation) :
 
 
     # Cost of dehumidification
-    Ep4 = ((Ab * Hb + Af * Hf * Nfu * int(Hi>0)) * (0.2 * int(d>=12) + 0.8 * int(d>=24) + 0.2 * int(d>=48))) * (int(adaptation=="None") + 0.5 * int(adaptation!="None"))
+    Ep4 = ((Ab * Hb + Af * Hf * Nfu * int(Hi>0)) * (0.2 * int(d>=12) + 0.8 * int(d>=24) + 0.2 * int(d>=50))) * (int(adaptation=="None") + 0.5 * int(adaptation!="None"))
     # Dehumidification needed increases with duration
     # In case of adaptation measures, active pumping decreases cost of preliminary measures
     Cp4 = Ep4 * catalogue["Pp4"]
@@ -224,7 +224,7 @@ def DamageCalculation(flood_type, user, adaptation) :
     # Cost of Plumbing System
     Ec16 = int(se=="high") * Af * (int(Hi>=0.15) * 0.1 + int(Hi>=0.4) * 0.2 + int(Hi>=0.9) * 0.2)
     # Plumbing is damaged if se>=0.1, with 10% of damages if Hi>=0.15, 30% if Hi>=0.4, 50% if Hi>=0.9
-    Cc16 = Ec16 * catalogue["Pc16"] * int(adaptation != "None")
+    Cc16 = Ec16 * catalogue["Pc16"] * int(adaptation == "None")
     # Structural Costs
 
     # Cost of soil consolidation
@@ -289,7 +289,7 @@ def print_camembert(costs, flood_type):
     for key, value in costs.items():
         if key == "total cost":
             continue
-        if value / total_cost >= 0.03:
+        if value / total_cost >= 0.05:
             labels.append(key)
             values.append(round(value))
         else:
@@ -300,20 +300,20 @@ def print_camembert(costs, flood_type):
         values.append(round(other_total))
         costs["Autres"] = other_total
 
-    #colors = [
-    #    "#4F81BD" if key.startswith("Cp") else  # Green for "Cp"
-    #    "#6FA9E1" if key.startswith("Cc") else  # Blue for "Cc"
-    #    "#ff9999" if key.startswith("Cs") else  # Red for "Cs"
-    #    "#B0CDEE"  # Grey for default
-    #    for key in labels
-    #]
+    colors = [
+        "LightBlue" if key.startswith("Cp") else
+        "Blue" if key.startswith("Cc") else  # Blue for "Cc"
+        "DarkBlue" if key.startswith("Cs") else  # Red for "Cs"
+        "#B0CDEE"  # Grey for default
+        for key in labels
+    ]
 
     sorted_items = sorted(zip(labels, values), key=lambda x: x[1], reverse=True)
     labels, values = zip(*sorted_items)
 
     cmap = cm.get_cmap('Blues')
     norm = np.linspace(0.3, 0.9, len(values))
-    colors = [cmap(n) for n in norm[::-1]]
+    #colors = [cmap(n) for n in norm[::-1]]
 
     label_mapping = {
             "Cp1": "Pompage",
